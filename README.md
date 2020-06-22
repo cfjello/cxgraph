@@ -1,6 +1,6 @@
 # CxGraph - A Deno Module
 
-A package to produces dependency graphs for nodes in a hierarchy. This package owes a lot to https://www.npmjs.com/package/dependency-graph, but this is a Deno typeScript implementation with a modified API that adds a sortable hierarchical numbering to the dependency graph.
+A module to produces dependency graphs for nodes in a hierarchy. This module owes a lot to https://www.npmjs.com/package/dependency-graph, but this is a Deno typeScript implementation with a somewhat modified API that adds a sortable hierarchical numbering to the dependency graph.
 
 ## Usage 
 
