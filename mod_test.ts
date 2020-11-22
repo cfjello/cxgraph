@@ -56,7 +56,7 @@ import { expect }  from 'https://deno.land/x/expect/mod.ts'
     let g = new CxGraph()
 
     Deno.test('It can add nodes objects and data', () => {    
-        g.addNode( new Node('A') ) 
+        g.addNode( 'A' ) 
         expect(g.getNode('A').data).toBe('A')       
         g.addNode( new Node('B') )
         g.addNode( new Node('C', 'C-Node') )
@@ -399,6 +399,36 @@ import { expect }  from 'https://deno.land/x/expect/mod.ts'
         expect(valArr).toEqual( ['01','01.01','01.01.01','01.01.02','01.01.02.01','01.01.02.01.01'].reverse())
         valArr = [ ...hierarKeyRep[1].values() ]
         expect(valArr).toEqual( ['01','01.01','01.02','01.02.01'].reverse())
+    })
+}
+
+{
+    let g = new CxGraph()
+    g.addNode( new Node('A') ) 
+    g.addNode( new Node('B') )
+    g.addNode( new Node('C', 'C-Node') )
+    g.addNode( new Node('D', ['D-0', 'D-1']) )
+    g.addNode( new Node('E', { type: 'Object'}) )
+    g.addNode( new Node('F') )
+    g.addNode( new Node('G') )
+    g.addNode( new Node('H') )
+    g.addNode( new Node('I') )
+    g.addNode( new Node('J') )
+      
+    g.addDependency('A', 'C')
+    g.addDependency('B', 'D')
+    g.addDependency('B', 'E')
+    g.addDependency('C', 'F')
+    // g.addDependency('C', 'G')
+    g.addDependency('G', 'H')
+    g.addDependency('H', 'I')
+    g.addDependency('E', 'I')
+
+    Deno.test('It should present show the right overall top nodes', () => {  
+        let valArr: string[] = g.overallTopNodes()
+        expect(valArr).toEqual( [ 'A','B','G', 'J' ])
+        let orphans: string[] = g.overallOrphans()
+        expect(orphans).toEqual( [ 'J' ])
     })
 }
 // })

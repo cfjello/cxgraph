@@ -218,6 +218,32 @@ export class CxGraph {
     }
 
     /**
+     * Get an array containing the TOP nodes names.
+     * 
+     * @returns An array of Top Node names
+     */
+    overallTopNodes(): string[] {
+        let topNodes: string[] = []
+        this.nodes.forEach( ( value, key ) => {
+            if ( this.incomingEdges.get(key)!.length === 0 ) topNodes.push(key)
+        })
+        return topNodes
+    }
+
+    /**
+     * Get an array containing the Orphan nodes names.
+     * 
+     * @returns An array of Orphan Node names
+     */
+    overallOrphans(): string[] {
+        let orphans: string[] = []
+        this.nodes.forEach( ( value, key ) => {
+            if ( this.incomingEdges.get(key)!.length === 0 && this.outgoingEdges.get(key)!.length === 0 ) orphans.push(key)
+        })
+        return orphans
+    }
+
+    /**
      * Depth-First-Search on a set of edges.
      *
      * Detects cycles and throws an Error if one is detected.
