@@ -231,7 +231,7 @@ export class CxGraph {
     }
 
     /**
-     * Get an array containing the Orphan nodes names.
+     * Get an array containing Orphan nodes names. 
      * 
      * @returns An array of Orphan Node names
      */

@@ -151,7 +151,7 @@ deno run examples/example_B.ts
   - `overallOrder(leavesOnly)` - construct the overall processing order for the dependency graph. If `leavesOnly` is true, only nodes that do not depend on any other nodes will be returned.
  - `dependantsOf(name, leavesOnly)` - get an array containing the nodes that depend on the specified node (transitively). If `leavesOnly` is true, only nodes that do not have any dependants will be returned in the array.
  - `overallTopNodes()` - get an array containing the TOP level nodes names. These are nodes that has no incoming dependencies, meaning that no other entry depends on them)
- - `overallOrphans()` - get an array containing the Orphan nodes names. These are nodes that has no incoming or outgoing dependencies, stand alone nodes that may or may not be ok in your setup. 
+ - `overallOrphans()` - get an array containing Orphan nodes names. These are nodes that has no incoming or outgoing dependencies, stand alone nodes that may or may not be ok in your setup. 
  - `hierarchyOfDependants(node:string, reverse: boolean = false, stepSize: number = 0 ): Map<string, string>[]`- This function first finds the leaf `dependantOf('nodeName', true)` and for each of these it calls `hierarchyOf(...)` to get the complete dependency tree for each of the dependant leaf nodes:
 ```
 // file: examples/example_C.ts
