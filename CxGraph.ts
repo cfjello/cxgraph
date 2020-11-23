@@ -1,4 +1,4 @@
-import { HierarKey } from 'https://raw.githubusercontent.com/cfjello/hierarkey/master/mod.ts'
+import { HierarKey } from 'https://deno.land/x/hierarkey@v1.0/mod.ts'
 
 export class Node<T> {  
     public type: string = ''
