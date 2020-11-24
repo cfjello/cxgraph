@@ -167,6 +167,18 @@ import { expect }  from 'https://deno.land/x/expect/mod.ts'
         expect( g.filter('XY', ['YY', 'XX', 'ZZ'] ).length ).toBe(3)
     })
 
+    Deno.test( 'getIncomingEdges should return a nodes incoming edges' , () => {
+        let edges = g.getOutgoingEdges('A')
+        expect( edges ).toEqual(['B','C'])
+    })
+
+    Deno.test( 'getOutgoingEdges should return a nodes outgoing edges' , () => {
+        let edges = g.getIncomingEdges('B')
+        expect (edges).toEqual(['A'])
+        let edgesIn = g.getOutgoingEdges('B')
+        expect( edgesIn ).toEqual(['D','E'])
+     })
+
     Deno.test( 'removeNode should also remove dependencies', () => {
         g.removeNode('B')
         expect(g.hasNode('B')).toBe(false)
@@ -175,6 +187,9 @@ import { expect }  from 'https://deno.land/x/expect/mod.ts'
         expect( g.outgoingEdges.has('B') ).toBe(false)
         expect(g.incomingEdges.get('E')!.includes('B')).toBe(false)
     })
+
+
+
 }
 //})
 

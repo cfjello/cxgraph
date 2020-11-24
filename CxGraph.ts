@@ -1,4 +1,4 @@
-import { HierarKey } from 'https://deno.land/x/hierarkey@v1.0/mod.ts'
+import { HierarKey } from 'https://deno.land/x/hierarkey/mod.ts'
 
 export class Node<T> {  
     public type: string = ''
@@ -37,6 +37,26 @@ export class CxGraph {
      */
     get size(): number {
         return this.nodes.size
+    }
+
+    /**
+     * Returns the outgoing edges for a single given a node name.
+     * @param name Node name.
+     * @returns string[] of node names
+     */
+    getOutgoingEdges( name: string ) {
+        let res = this.outgoingEdges.get(name)
+        return res !== undefined ? res : []
+    }
+
+    /**
+     * Returns the incoming edges for a single given a node name.
+     * @param name Node name.
+     * @returns string[] of node names
+     */
+    getIncomingEdges( name: string ): string[] {
+        let res = this.incomingEdges.get(name)
+        return res !== undefined ? res : []
     }
 
     /**

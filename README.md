@@ -1,4 +1,4 @@
-# CxGraph - A Deno Module
+# CxGraph - Deno Module
 
 A module to produces dependency graphs for nodes in a hierarchy. This module owes a lot to https://www.npmjs.com/package/dependency-graph, but this is a Deno typeScript implementation with a somewhat modified API that adds a sortable hierarchical numbering to the dependency graph.
 
@@ -8,7 +8,7 @@ Nodes names in the graph are just simple strings with optional data associated w
 
 ```
 // file: examples/example_A.ts
-import {CxGraph, Node} from '../mod.ts'
+import {CxGraph, Node} from 'https://deno.land/x/cxgraph/mod.ts'
 
 let g = new CxGraph()
 g.addNode( new Node('A') )  
@@ -120,7 +120,7 @@ Show the hierarchy graph in reverse order:
 Using typescript you can create a typed node and fetch a typed `getNodeData<T>`:
 ```
 // file: examples/example_B.ts
-import {CxGraph, Node} from '../mod.ts'
+import {CxGraph, Node} from 'https://deno.land/x/cxgraph/mod.ts'
 
 let g = new CxGraph()
 
@@ -145,17 +145,19 @@ deno run examples/example_B.ts
  - `setNode(name: string, data: T): void` - set the data for an existing node (will throw an `Error` if the node does not exist or if the supplied data is null or empty)
  - `addDependency(from, to): void` - add a dependency between two nodes (will throw an `Error` if one of the nodes does not exist)
  - `removeDependency(from, to): void` - remove a dependency between two nodes
--  `hierarchyOf( node:string, reverse: boolean = false, stepSize: number = 0 ): Map<string,string>` - Get the hierarchy of dependencies for the given node. set reverse equal to true for a reverse sort of the result based on the id strings, and use stepSize to enlarge the number of digits in the strings used the represent the hierarchy levels.
+ - `getOutgoingEdges( name: string ): string[]`- Returns the outgoing edges for a single given a node name
+ - `getIncomingEdges( name: string ): string[]`- Returns the incoming edges for a single given a node name
+-  `hierarchyOf( node:string, reverse: boolean = false, stepSize: number = 0 ): Map<string,string>` - Get the hierarchy of dependencies for the given node. set reverse equal to true for a reverse sort of the result based on the id strings, and use stepSize to enlarge the number of digits in the strings used the represent the hierarchy levels
 - ` overallHierarchy( reverse: boolean = false, stepSize: number = 0 ): Map<string,string>` - Get an array of hierarchy maps (since the overall graph may have multiple top nodes)
  - `dependenciesOf(name, leavesOnly)` - get an array containing the nodes that the specified node depends on (transitively). If `leavesOnly` is true, only nodes that do not depend on any other nodes will be returned in the array.
-  - `overallOrder(leavesOnly)` - construct the overall processing order for the dependency graph. If `leavesOnly` is true, only nodes that do not depend on any other nodes will be returned.
- - `dependantsOf(name, leavesOnly)` - get an array containing the nodes that depend on the specified node (transitively). If `leavesOnly` is true, only nodes that do not have any dependants will be returned in the array.
+  - `overallOrder(leavesOnly)` - construct the overall processing order for the dependency graph. If `leavesOnly` is true, only nodes that do not depend on any other nodes will be returned
+ - `dependantsOf(name, leavesOnly)` - get an array containing the nodes that depend on the specified node (transitively). If `leavesOnly` is true, only nodes that do not have any dependants will be returned in the array
  - `overallTopNodes()` - get an array containing the TOP level nodes names. These are nodes that has no incoming dependencies, meaning that no other entry depends on them)
- - `overallOrphans()` - get an array containing Orphan nodes names. These are nodes that has no incoming or outgoing dependencies, stand alone nodes that may or may not be ok in your setup. 
+ - `overallOrphans()` - get an array containing Orphan nodes names. These are nodes that has no incoming or outgoing dependencies, stand alone nodes that may or may not be ok in your setup 
  - `hierarchyOfDependants(node:string, reverse: boolean = false, stepSize: number = 0 ): Map<string, string>[]`- This function first finds the leaf `dependantOf('nodeName', true)` and for each of these it calls `hierarchyOf(...)` to get the complete dependency tree for each of the dependant leaf nodes:
 ```
 // file: examples/example_C.ts
-import {CxGraph, Node} from '../mod.ts'
+import {CxGraph, Node} from 'https://deno.land/x/cxgraph/mod.ts'
 
  let g = new CxGraph()
  g.addNode( new Node('A') ) 
@@ -177,9 +179,8 @@ import {CxGraph, Node} from '../mod.ts'
  g.addDependency('G', 'H')
  g.addDependency('H', 'I')
  g.addDependency('E', 'I')
- 
-let hierarKeyRep: Map<string,string>[] = g.hierarchyOfDependants('I')
-console.log(hierarKeyRep)
+ let hierarKeyRep: Map<string,string>[] = g.hierarchyOfDependants('I')
+ console.log(hierarKeyRep)
 ```
 Run the TypeScript file:
 ```
