@@ -147,6 +147,9 @@ deno run examples/example_B.ts
  - `removeDependency(from, to): void` - remove a dependency between two nodes
  - `getOutgoingEdges( name: string ): string[]`- Returns the outgoing edges for a single given a node name
  - `getIncomingEdges( name: string ): string[]`- Returns the incoming edges for a single given a node name
+ - `addTopNode( _node: Node<any> | string ): void`- Adds a Top Node to the graph
+ - `updTopNode( topName: string ): void` - Updates the Top Node of the graph by adding other newly created top level nodes to its dependencies
+  - `getTopNodeNames(): string[]` - gets an array of top node names, that is nodes with no incoming edges
 -  `hierarchyOf( node:string, reverse: boolean = false, stepSize: number = 0 ): Map<string,string>` - Get the hierarchy of dependencies for the given node. set reverse equal to true for a reverse sort of the result based on the id strings, and use stepSize to enlarge the number of digits in the strings used the represent the hierarchy levels
 - ` overallHierarchy( reverse: boolean = false, stepSize: number = 0 ): Map<string,string>` - Get an array of hierarchy maps (since the overall graph may have multiple top nodes)
  - `dependenciesOf(name, leavesOnly)` - get an array containing the nodes that the specified node depends on (transitively). If `leavesOnly` is true, only nodes that do not depend on any other nodes will be returned in the array.

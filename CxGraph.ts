@@ -60,7 +60,7 @@ export class CxGraph {
     }
 
     /**
-     * Returns the Node instance given a node name.
+     * Sets a Node instance .
      * @param name Node name.
      */
     setNode(node: Node<any>): void {
@@ -79,6 +79,21 @@ export class CxGraph {
             return this.nodes.get(name)!
         else 
             throw new Error(`GetNode: Node "${name}" not found!`);
+    }
+
+    /**
+     * Returns an array of Top Node names.
+     * @returns string[] an array of Top Node names
+     */
+    getTopNodeNames(): string[] {
+        let res: string[] = []
+        this.overallOrder().forEach( (name: string) => {
+            let deps: string[] = this.getIncomingEdges(name)
+            if ( deps.length === 0 ) {
+                res.push(name)
+            }
+        })
+        return res
     }
 
     /**
@@ -116,6 +131,31 @@ export class CxGraph {
     addNode( _node: Node<any> | string ): void {
         let node = typeof(_node) === 'string' ? new Node( _node, _node) : _node
         this.setNode(node)
+    }
+
+     /**
+     * Adds a Top Node to the graph.
+     * @param nodeOrString Node object or Node name string.
+     */
+    addTopNode( _node: Node<any> | string ): void {
+        let node = typeof(_node) === 'string' ? new Node( _node, _node) : _node
+        this.setNode(node)
+        this.getTopNodeNames().forEach( name => { 
+            if ( name !== node.name ) this.addDependency(node.name, name) 
+        })
+    }
+
+    /**
+     * Updates the Top Node of the graph by adding other newly created top level nodes to its dependencies
+     * @param string  The Top Node name.
+     */
+    updTopNode( topName: string ): void {
+        if ( ! this.hasNode( topName ))  throw new Error(`A node with the name of "${topName}" does NOT exists in the graph!`)
+        if (  this.getIncomingEdges( topName ).length > 0 ) throw new Error(`Cannot update a Top Node: "${topName}" that has incoming edges!`)
+        this.getTopNodeNames().forEach( name => {
+            if ( name !== topName && ! this.getOutgoingEdges(name).includes(name) ) 
+                this.addDependency(topName, name) 
+        })
     }
 
     /**

@@ -445,6 +445,91 @@ import { expect }  from 'https://deno.land/x/expect/mod.ts'
         let orphans: string[] = g.overallOrphans()
         expect(orphans).toEqual( [ 'J' ])
     })
+
+    Deno.test('It should fetch Top Nodes', () => {  
+        let valArr: string[] = g.overallTopNodes()
+        expect(valArr).toEqual( [ 'A','B','G', 'J' ])
+        let orphans: string[] = g.overallOrphans()
+        expect(orphans).toEqual( [ 'J' ])
+    })
 }
-// })
+
+{
+    let g = new CxGraph()
+    g.addNode( new Node('A') ) 
+    g.addNode( new Node('B') )
+    g.addNode( new Node('C', 'C-Node') )
+    g.addNode( new Node('D', ['D-0', 'D-1']) )
+    g.addNode( new Node('E', { type: 'Object'}) )
+    g.addNode( new Node('F') )
+    g.addNode( new Node('G') )
+    g.addNode( new Node('H') )
+    g.addNode( new Node('I') )
+    g.addNode( new Node('J') )
+      
+    g.addDependency('A', 'C')
+    g.addDependency('B', 'D')
+    g.addDependency('B', 'E')
+    g.addDependency('C', 'F')
+    // g.addDependency('C', 'G')
+    g.addDependency('G', 'H')
+    g.addDependency('H', 'I')
+    g.addDependency('E', 'I')
+
+    g.addTopNode('T')
+
+    Deno.test('It should handle additional created Top Nodes', () => { 
+        let valArr: string[] = g.overallTopNodes()
+        expect(valArr.length).toEqual(1) 
+        let valArr2: string[] = g.getOutgoingEdges('T')
+        expect(valArr2).toEqual( [ 'A','B','G', 'J' ])
+    })
+}
+
+{
+    let g = new CxGraph()
+    g.addNode( new Node('A') ) 
+    g.addNode( new Node('B') )
+    g.addNode( new Node('C', 'C-Node') )
+    g.addNode( new Node('D', ['D-0', 'D-1']) )
+    g.addNode( new Node('E', { type: 'Object'}) )
+    g.addNode( new Node('F') )
+    
+      
+    g.addDependency('A', 'C')
+    g.addDependency('B', 'D')
+    g.addDependency('B', 'E')
+    g.addDependency('C', 'F')
+    // g.addDependency('C', 'G')
+  
+
+    g.addTopNode('T')
+
+    g.addNode( new Node('G') )
+    g.addNode( new Node('H') )
+    g.addNode( new Node('I') )
+    g.addNode( new Node('J') )
+
+    g.addDependency('G', 'H')
+    g.addDependency('H', 'I')
+    g.addDependency('E', 'I')
+
+
+    Deno.test('It should handle update Top Node and multiple Top NOdes', () => { 
+        let valArr: string[] = g.getOutgoingEdges('T')
+        expect(valArr).toEqual( [ 'A','B'])
+        g.updTopNode('T')
+        let valArr2: string[] = g.getOutgoingEdges('T')
+        expect(valArr2).toEqual([ 'A','B','G', 'J' ])
+        let valArr3: string[] = g.getTopNodeNames()
+        expect(valArr3).toEqual([ 'T' ])
+        g.addTopNode('S')
+        let valArr4: string[] = g.getTopNodeNames()
+        expect(valArr4).toEqual([ 'S' ])
+        g.removeNode('S')
+        g.removeNode('T')
+        let valArr5: string[] = g.getTopNodeNames()
+        expect(valArr5).toEqual([ 'A','B','G', 'J' ])
+    })
+}
 
